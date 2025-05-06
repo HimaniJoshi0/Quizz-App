@@ -46,7 +46,7 @@ const Navbar = () => {
         <div className='flex md:hidden' onClick={() => { setIsMenuOpen(!isMenuOpen) }}>
           Icon
         </div>
-        <button>Sign In</button>
+        <Link href="/login">Login</Link>
       </div>
     </>
   );
