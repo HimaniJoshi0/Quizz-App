@@ -18,3 +18,8 @@ export  interface NavSection {
     title: string;
     links: NavLink[];
   }
+
+export interface CardsType{
+    title:string;
+    description:string
+}

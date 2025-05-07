@@ -11,16 +11,16 @@ const Login = () => {
     }
 
     return (
-        <div className='grid md:grid-cols-2 w-screen p-10 place-items-center h-screen'>
+        <div className='grid md:grid-cols-2 w-screen place-items-center h-screen' style={{ backgroundImage: 'linear-gradient(90deg, #70ACD4, #9BBCEE, #A8CAE8, #4882E6, #245595, #70ACD4)' }}>
             <div className='flex flex-col gap-4 justify-center items-center'>
-                <input type='text' placeholder='Name' className='border-2 w-[500px] p-2'></input>
-                <input type='text' placeholder='email' className='border-2 w-[500px] p-2'></input>
-                <Button title="Login" onclick={handleLoginSubmit} classes="mt-3" />
+                <input type='text' placeholder='Name' className='w-[500px] p-2 bg-white/70'></input>
+                <input type='text' placeholder='email' className='w-[500px] p-2 bg-white/70'></input>
+                <Button title="Login" onclick={handleLoginSubmit} classes="mt-3 bg-gray-700 border-2 border-white p-2 rounded-md" />
                 <span> Don't have an account ? <Link href="/register"> Register here</Link> </span>
             </div>
 
-            <div className='hidden md:flex'>
-                <Image src={Heroimg} alt="hero section image" className='w-full' />
+            <div className='hidden md:flex h-screen'>
+                <Image src={Heroimg} alt="hero section image" className='w-full h-full' />
             </div>
         </div>
     )

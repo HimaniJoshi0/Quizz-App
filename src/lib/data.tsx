@@ -1,4 +1,4 @@
-import { NavSection, Navtypes } from "./types";
+import { CardsType, NavSection, Navtypes } from "./types";
 
 export const Navdata: Navtypes[] = [
     {
@@ -36,3 +36,36 @@ export const navItems: NavSection[] = [
         ]
     }
 ];
+
+export const CardsData: CardsType[] = [
+    {
+        title: "Question Generator",
+        description: "Generate a diverse range of question types from a multitude of source materials, including PDFs, Word documents, video and audio files, images, web links, and specified topics."
+
+    },
+    {
+        title: "Question Generator",
+        description: "Generate a diverse range of question types from a multitude of source materials, including PDFs, Word documents, video and audio files, images, web links, and specified topics."
+
+    },
+    {
+        title: "Question Generator",
+        description: "Generate a diverse range of question types from a multitude of source materials, including PDFs, Word documents, video and audio files, images, web links, and specified topics."
+
+    },
+    {
+        title: "Question Generator",
+        description: "Generate a diverse range of question types from a multitude of source materials, including PDFs, Word documents, video and audio files, images, web links, and specified topics."
+
+    },
+    {
+        title: "Question Generator",
+        description: "Generate a diverse range of question types from a multitude of source materials, including PDFs, Word documents, video and audio files, images, web links, and specified topics."
+
+    },
+    {
+        title: "Question Generator",
+        description: "Generate a diverse range of question types from a multitude of source materials, including PDFs, Word documents, video and audio files, images, web links, and specified topics."
+
+    },
+]

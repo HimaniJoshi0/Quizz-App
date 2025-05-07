@@ -11,12 +11,12 @@ const Aboutus = () => {
     }
 
     return (
-        <div>
-            <h1 className='text-6xl font-bold text-center'>About Us</h1>
-            <div className='grid grid-cols-1 md:grid-cols-2 py-18 px-10 gap-8'>
+        <div className='px-8 mt-8'>
+            <h1 className='text-6xl font-bold text-center text-black'>About Us</h1>
+            <div className='grid grid-cols-1 md:grid-cols-2 py-18  gap-8'>
                 <div className='w-full'>
                     <Image src={Aboutimg} alt="hero section image" className='w-full' />
-                </div>  
+                </div>
                 <div className='flex flex-col justify-center'>
                     <p className='mt-3 text-gray-600'> Welcome to our AI-powered quiz app — your smart companion for personalized learning and self-improvement. Whether you're a student preparing for exams, a curious mind exploring new subjects, or a trivia lover chasing knowledge, our platform uses artificial intelligence to generate dynamic, tailored quizzes just for you. With real-time feedback, adaptive question sets, and progress tracking, we’re here to make learning efficient, engaging, and fun.
                     </p>
