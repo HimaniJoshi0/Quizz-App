@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { AxiosResponse } from 'axios'
 
 // API configuration
 const api = axios.create({
@@ -30,13 +30,20 @@ api.interceptors.response.use(
   }
 )
 
+// Base response type for all API responses
+export interface ApiResponse<T> {
+  success: boolean
+  message: string
+  data?: T
+}
+
 // Common API request function with TypeScript generics
-export async function apiRequest<TResponse = any, TRequest = any>(
+export async function apiRequest<TResponse extends ApiResponse<unknown>, TRequest extends Record<string, unknown>>(
   config: {
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
     path: string
     data?: TRequest
-    params?: Record<string, any>
+    params?: Record<string, string | number | boolean>
     headers?: Record<string, string>
   }
 ): Promise<TResponse> {
@@ -49,8 +56,8 @@ export async function apiRequest<TResponse = any, TRequest = any>(
       headers: config.headers
     })
     return response.data
-  } catch (error: any) {
-    if (error.response) {
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
       throw new Error(error.response.data.message || 'Request failed')
     }
     throw new Error('Network error')
@@ -58,23 +65,21 @@ export async function apiRequest<TResponse = any, TRequest = any>(
 }
 
 // Example usage with types
-export interface LoginRequest {
+export interface LoginRequest extends Record<string, unknown> {
   email: string
   password: string
 }
 
-export interface LoginResponse {
-  success: boolean
-  message: string
-  data: {
-    user: {
-      id: number
-      email: string
-      name: string
-    }
-    token: string
+export interface LoginResponseData {
+  user: {
+    id: number
+    email: string
+    name: string
   }
+  token: string
 }
+
+export type LoginResponse = ApiResponse<LoginResponseData>
 
 // API endpoints
 export const endpoints = {

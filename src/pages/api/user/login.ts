@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import { PrismaClient } from '@prisma/client/extension'
 
 const prisma = new PrismaClient()
 
@@ -57,7 +57,7 @@ export default async function handler(
     )
 
     // Remove password from response
-    const { password: _, ...userWithoutPassword } = user
+    const { ...userWithoutPassword } = user
 
     return res.status(200).json({
       success: true,

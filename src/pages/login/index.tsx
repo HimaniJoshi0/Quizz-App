@@ -16,7 +16,7 @@ const Login = () => {
                 <input type='text' placeholder='Name' className='w-[500px] p-2 bg-white/70'></input>
                 <input type='text' placeholder='email' className='w-[500px] p-2 bg-white/70'></input>
                 <Button title="Login" onclick={handleLoginSubmit} classes="mt-3 bg-gray-700 border-2 border-white p-2 rounded-md" />
-                <span> Don't have an account ? <Link href="/register"> Register here</Link> </span>
+                <span> Don`t have an account ? <Link href="/register"> Register here</Link> </span>
             </div>
 
             <div className='hidden md:flex h-screen'>

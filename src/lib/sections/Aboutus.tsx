@@ -18,7 +18,7 @@ const Aboutus = () => {
                     <Image src={Aboutimg} alt="hero section image" className='w-full' />
                 </div>
                 <div className='flex flex-col justify-center'>
-                    <p className='mt-3 text-gray-600'> Welcome to our AI-powered quiz app — your smart companion for personalized learning and self-improvement. Whether you're a student preparing for exams, a curious mind exploring new subjects, or a trivia lover chasing knowledge, our platform uses artificial intelligence to generate dynamic, tailored quizzes just for you. With real-time feedback, adaptive question sets, and progress tracking, we’re here to make learning efficient, engaging, and fun.
+                    <p className='mt-3 text-gray-600'> Welcome to our AI-powered quiz app — your smart companion for personalized learning and self-improvement. Whether you`re a student preparing for exams, a curious mind exploring new subjects, or a trivia lover chasing knowledge, our platform uses artificial intelligence to generate dynamic, tailored quizzes just for you. With real-time feedback, adaptive question sets, and progress tracking, we’re here to make learning efficient, engaging, and fun.
                     </p>
                     <ul className='mt-3 text-gray-600 list-disc list-inside'>
                         <li>AI-generated quizzes tailored to your learning pace and goals</li>
