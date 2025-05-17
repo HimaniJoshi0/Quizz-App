@@ -24,14 +24,6 @@ model User {
   updatedAt     DateTime      @updatedAt
 }
 
-model Category {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique
-  description String?
-  quizzes     Quiz[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
 
 model Quiz {
   id           Int           @id @default(autoincrement())
@@ -41,10 +33,9 @@ model Quiz {
   isPublic     Boolean       @default(true)
   author       User          @relation("CreatedQuizzes", fields: [authorId], references: [id])
   authorId     Int
-  category     Category      @relation(fields: [categoryId], references: [id])
-  categoryId   Int
   questions    Question[]
   attempts     QuizAttempt[]
+  topic        String?
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 }
@@ -54,8 +45,6 @@ model Question {
   quizId      Int
   quiz        Quiz     @relation(fields: [quizId], references: [id])
   text        String
-  answer      Option   @relation("CorrectAnswer", fields: [answerId], references: [id])
-  answerId    Int
   options     Option[] @relation("QuestionOptions")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -63,9 +52,9 @@ model Question {
 
 model Option {
   id             Int        @id @default(autoincrement())
-  text           String
+  text           String?
+  isCorrect      Boolean    @default(false)
   questions      Question[] @relation("QuestionOptions")
-  correctForQuestions Question[] @relation("CorrectAnswer")
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
 }
