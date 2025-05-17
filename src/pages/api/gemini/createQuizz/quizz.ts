@@ -1,13 +1,11 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiResponse } from "next";
 import { GoogleGenAI, Type } from "@google/genai";
 import { withAuth, AuthenticatedRequest } from "@/lib/middleware";
 import { PrismaClient, Quiz } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const ai = new GoogleGenAI({
-  apiKey: "AIzaSyCtP03juY4vAEATRHreMwrY34ro-Hda3G8",
-});
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
 
 interface CreateQuizRequest extends Record<string, unknown> {
   topic: string;
