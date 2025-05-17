@@ -1,10 +1,18 @@
-import { Buttontypes } from '@/lib/types'
 import React from 'react'
+import { Button, gridClasses } from "@mui/material"
 
-const Button = ({ title, onclick, classes }: Buttontypes) => {
-    return (
-        <button onClick={onclick} className={`cursor-pointerpy-3 px-8 rounded text-white w-fit ${classes}`}>{title}</button>
-    )
+export interface Buttontypes {
+  title: string
+  onclick?: () => void;
+  classes?: string
+  variant: 'contained' | 'outlined' | 'text'
+  type?: 'button' | 'submit' | 'reset'
 }
 
-export default Button
+const CommonButton = ({ title, onclick = () => { }, classes = "", variant, type }: Buttontypes) => {
+  return (
+    <Button variant={variant} className={classes} onClick={onclick} type={type}>{title}</Button>
+  )
+}
+
+export default CommonButton

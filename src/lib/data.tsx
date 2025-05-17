@@ -6,8 +6,12 @@ export const Navdata: Navtypes[] = [
         link: "/"
     },
     {
-        title: "About",
+        title: "Features",
         link: "/about"
+    },
+    {
+        title: "Create Quiz",
+        link: "/quiz"
     },
 ]
 

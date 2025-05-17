@@ -8,27 +8,6 @@ const api = axios.create({
   }
 })
 
-// Request interceptor for adding auth token
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token')
-  if (token && config.headers) {
-    config.headers.Authorization = `Bearer ${token}`
-  }
-  return config
-})
-
-// Response interceptor for handling errors
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      // Handle unauthorized access
-      localStorage.removeItem('token')
-      window.location.href = '/login'
-    }
-    return Promise.reject(error)
-  }
-)
 
 // Base response type for all API responses
 export interface ApiResponse<T> {
@@ -38,7 +17,7 @@ export interface ApiResponse<T> {
 }
 
 // Common API request function with TypeScript generics
-export async function apiRequest<TResponse extends ApiResponse<unknown>, TRequest extends Record<string, unknown>>(
+export async function apiRequest<TResponse extends ApiResponse<unknown>, TRequest>(
   config: {
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
     path: string
@@ -64,45 +43,4 @@ export async function apiRequest<TResponse extends ApiResponse<unknown>, TReques
   }
 }
 
-// Example usage with types
-export interface LoginRequest extends Record<string, unknown> {
-  email: string
-  password: string
-}
 
-export interface LoginResponseData {
-  user: {
-    id: number
-    email: string
-    name: string
-  }
-  token: string
-}
-
-export type LoginResponse = ApiResponse<LoginResponseData>
-
-// API endpoints
-export const endpoints = {
-  auth: {
-    login: () => '/user/login',
-    register: () => '/user/register'
-  },
-  quiz: {
-    list: () => '/quiz',
-    create: () => '/quiz',
-    getById: (id: number) => `/quiz/${id}`,
-    update: (id: number) => `/quiz/${id}`,
-    delete: (id: number) => `/quiz/${id}`
-  }
-} as const
-
-// Example usage:
-/*
-const loginUser = async (credentials: LoginRequest) => {
-  return apiRequest<LoginResponse, LoginRequest>({
-    method: 'POST',
-    path: endpoints.auth.login(),
-    data: credentials
-  })
-}
-*/
