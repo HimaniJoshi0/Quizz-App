@@ -3,30 +3,34 @@ import { PrismaClient, Prisma } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-type GetQuizResponse = {
-  success: boolean;
-  message: string;
-  data?: {
-    quizzes: {
+type QuizData = {
+  id: number;
+  title: string;
+  description: string | null;
+  timeLimit: number;
+  isPublic: boolean;
+  topic: string | null;
+  questions: {
+    id: number;
+    text: string;
+    options: {
       id: number;
-      title: string;
-      description: string | null;
-      timeLimit: number;
-      isPublic: boolean;
-      topic: string | null;
-      questions: {
-        id: number;
-        text: string;
-        options: {
-          id: number;
-          text: string;
-          isCorrect: boolean;
-        }[];
-      }[];
+      text: string | null;
+      isCorrect: boolean;
       createdAt: Date;
       updatedAt: Date;
     }[];
-  };
+    createdAt: Date;
+    updatedAt: Date;
+  }[];
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+type GetQuizResponse = {
+  success: boolean;
+  message: string;
+  data?: QuizData[] | QuizData;
   error?: string;
 };
 
@@ -42,9 +46,39 @@ export default async function handler(
   }
 
   try {
-    const { isPublic, q } = req.query;
-    const searchQuery = q as string;
+    const { isPublic, q, id } = req.query;
 
+    // If ID is provided, return single quiz
+    if (id) {
+      const quiz = await prisma.quiz.findUnique({
+        where: {
+          id: Number(id),
+        },
+        include: {
+          questions: {
+            include: {
+              options: true,
+            },
+          },
+        },
+      });
+
+      if (!quiz) {
+        return res.status(404).json({
+          success: false,
+          message: "Quiz not found",
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "Quiz fetched successfully",
+        data: quiz,
+      });
+    }
+
+    // Otherwise, return multiple quizzes with search
+    const searchQuery = q as string;
     const whereCondition: Prisma.QuizWhereInput = {
       AND: [
         isPublic === "true" ? { isPublic: true } : {},
@@ -84,9 +118,7 @@ export default async function handler(
     return res.status(200).json({
       success: true,
       message: "Quizzes fetched successfully",
-      data: {
-        quizzes,
-      },
+      data: quizzes,
     });
   } catch (error) {
     console.error("Fetch quizzes error:", error);
