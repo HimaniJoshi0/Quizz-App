@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
+import Cookies from 'js-cookie' // <-- Add this import
 
 // API configuration
 const api = axios.create({
@@ -27,12 +28,18 @@ export async function apiRequest<TResponse extends ApiResponse<unknown>, TReques
   }
 ): Promise<TResponse> {
   try {
+    const token = Cookies.get('authToken')
+    const headers = {
+      ...config.headers,
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
+    }
+
     const response: AxiosResponse<TResponse> = await api({
       method: config.method,
       url: config.path,
       data: config.data,
       params: config.params,
-      headers: config.headers
+      headers: headers
     })
     return response.data
   } catch (error) {

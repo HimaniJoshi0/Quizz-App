@@ -40,7 +40,6 @@ const Login = () => {
     })
 
     const handleRegisterSubmit = async (data: LoginForm) => {
-        console.log('Form Data:', data)
         try {
             const response = await apiRequest<CommonResponse<LoginResponse>, LoginForm>({
                 method: 'POST',
