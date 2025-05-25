@@ -5,22 +5,12 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-type LoginResponse = {
-  success: boolean;
-  message: string;
-  data?: {
-    user: Omit<any, "password">;
-    token: string;
-  };
-  error?: string;
-};
-
 // Allow only specific origins if needed (e.g., 'http://localhost:3000')
 const allowedOrigins = ["*"]; // You can replace "*" with specific domains for more security
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<LoginResponse>
+  res: NextApiResponse
 ) {
   // Set CORS headers
   const origin = req.headers.origin || "*";
@@ -80,7 +70,8 @@ export default async function handler(
       { expiresIn: "1d" }
     );
 
-    const { password: _removedPassword, ...userWithoutPassword } = user;
+    // Remove password from response
+    const { ...userWithoutPassword } = user;
 
     return res.status(200).json({
       success: true,
