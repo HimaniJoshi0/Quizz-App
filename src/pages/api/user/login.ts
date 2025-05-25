@@ -5,13 +5,32 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+type LoginResponse = {
+  success: boolean;
+  message: string;
+  data?: {
+    user: Omit<any, "password">;
+    token: string;
+  };
+  error?: string;
+};
+
+// Allow only specific origins if needed (e.g., 'http://localhost:3000')
+const allowedOrigins = ["*"]; // You can replace "*" with specific domains for more security
+
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<LoginResponse>
 ) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  // Set CORS headers
+  const origin = req.headers.origin || "*";
+  if (allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
 
   // Handle preflight OPTIONS request
   if (req.method === "OPTIONS") {
@@ -28,7 +47,6 @@ export default async function handler(
   try {
     const { email, password } = req.body;
 
-    // Validate required fields
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -36,7 +54,6 @@ export default async function handler(
       });
     }
 
-    // Find user
     const user = await prisma.user.findUnique({
       where: { email },
     });
@@ -48,7 +65,6 @@ export default async function handler(
       });
     }
 
-    // Verify password
     const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (!isValidPassword) {
@@ -58,15 +74,13 @@ export default async function handler(
       });
     }
 
-    // Generate JWT token
     const token = jwt.sign(
       { userId: user.id },
       process.env.JWT_SECRET || "your-secret-key",
       { expiresIn: "1d" }
     );
 
-    // Remove password from response
-    const { ...userWithoutPassword } = user;
+    const { password: _removedPassword, ...userWithoutPassword } = user;
 
     return res.status(200).json({
       success: true,
@@ -81,6 +95,7 @@ export default async function handler(
     return res.status(500).json({
       success: false,
       message: "Internal server error",
+      error: (error as Error).message,
     });
   } finally {
     await prisma.$disconnect();
