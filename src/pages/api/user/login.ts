@@ -5,24 +5,18 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-// Allow only specific origins if needed (e.g., 'http://localhost:3000')
-const allowedOrigins = ["*"]; // You can replace "*" with specific domains for more security
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   // Set CORS headers
-  const origin = req.headers.origin || "*";
-  if (allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  }
-
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  // Set CORS headers before any method checks
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "*");
+  res.setHeader("Access-Control-Allow-Headers", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
 
-  // Handle preflight OPTIONS request
+  // Handle preflight request
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
