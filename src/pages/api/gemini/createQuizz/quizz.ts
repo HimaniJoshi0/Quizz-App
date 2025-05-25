@@ -1,6 +1,6 @@
 import type { NextApiResponse } from "next";
 import { GoogleGenAI, Type } from "@google/genai";
-import { withAuth, AuthenticatedRequest } from "@/lib/middleware";
+import { AuthenticatedRequest } from "@/lib/middleware";
 import { PrismaClient, Quiz } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -41,6 +41,10 @@ async function handler(
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   if (req.method !== "POST") {
     return res.status(405).json({
       success: false,
@@ -201,4 +205,4 @@ async function handler(
 }
 
 // Single default export with the wrapped handler
-export default withAuth(handler);
+export default handler;
